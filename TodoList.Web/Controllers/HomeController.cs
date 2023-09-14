@@ -17,8 +17,10 @@ namespace TodoList.Web.Controllers
 
         public IActionResult Index()
         {
-            ToDoController controller = new ToDoController(_context);
-            return View(controller.GetAll());
+            //ToDoController controller = new ToDoController(_context);
+            //return View(controller.GetAll());
+
+            return View();
 
 
 

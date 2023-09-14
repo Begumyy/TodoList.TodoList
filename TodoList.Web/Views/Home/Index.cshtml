@@ -1,28 +1,89 @@
-﻿@model List<ToDo>
+﻿
+<a class="btn btn-success"  id="btnEkle">Ekle</a>
 
-    <a class="btn btn-success" asp-controller="ToDo" asp-action="Add">Add</a>
+<div id="divTodos" class="row"></div>
 
-    <div class="row">
-        @foreach(var todo in Model)
-        {
-        <div class="col-xxl-4">
-            <div class="card">
-                <div class="card-body">
-                    @if(todo.Category.Name=="Acil")
-                    {
-                        <h3 class="card-title bg-danger text-white">@todo.Title</h3>
+@section Scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //buraya yazılan şeyler sayfa hazır olduğunda çalışacak olan şeylerdir.
+            ToDoGetir();
+        });
+
+        $("#btnEkle").click(function () {
+            Swal.fire("test");
+        });
+
+        function ToDoGetir() {
+            $.ajax({
+                type: 'GET',
+                url: '/ToDo/GetAll',
+                success: function (res) {
+
+                    for (var item of res) {
+                        $("#divTodos").empty();
+                        $("#divTodos").append(`<div class="col-4">
+                            <div class="card">
+                                <div class="card-body">
+
+                                        <h3 class="card-title bg-danger text-white">${item.title}</h3>
+
+                                    <p class="card-text">${item.description}</p>
+                                    Öncelik : <span>${item.category.name}</span>
+                                </div>
+                                <div class="card-footer text-center"><a onclick="setYapildi(${item.id})" class="btn btn-success">Done</a> <a onclick="Delete(${item.id})" class="btn btn-danger">Sil</a> </div>
+                            </div>
+                        </div>`)
+
                     }
-                    else if(todo.Category.Name=="Düşük")
-                    {
-                        <h3 class="card-title bg-primary text-white">@todo.Title</h3>
-                    }
-                    
-                    <p class="card-text">@todo.Description</p>
-                    Öncelik : <span>@todo.Category.Name</span>
-                </div>
-                <div class="card-footer text-center"><a asp-action="SetIsActive" asp-controller="ToDo" asp-route-id="@todo.Id" class="btn btn-success">Done</a> <a onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-danger" asp-controller="ToDo" asp-action="Delete" asp-route-id="@todo.Id">Delete</a> </div>
-            </div>
-        </div>
+
+
+
+                }
+            });
         }
-     
-    </div>
+
+
+        function setYapildi(yapildiOlarakIsaretlenecekTodoId) {
+            $.ajax({
+                type: 'POST',
+                url: '/ToDo/SetIsActive',
+                data: {
+                    id: yapildiOlarakIsaretlenecekTodoId
+                },
+                success: function () {
+                    ToDoGetir();
+                }
+            })
+        }
+
+
+        function sil(id){
+
+
+            Swal.fire({
+                title: 'Are you sure you want to delete this?',
+                showCancelButton: true,
+                confirmButtonText: 'Evet',
+                cancelButtonText: `İptal`,
+            }).then((result) => {
+                
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/ToDo/Delete',
+                        data: { id: id },
+                        success: function () {
+                            ToDoGetir();
+                        }
+                    })
+                } 
+            })
+
+        }
+
+    </script>
+}
+
+

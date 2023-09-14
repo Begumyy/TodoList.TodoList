@@ -25,18 +25,22 @@ namespace TodoList.Web.Controllers
 
         }
 
-        public List<ToDo> GetAll()
+        public IActionResult GetAll()
         {
-            return _context.ToDos.Include(t=>t.Category).Where(t=>t.IsActive==true).ToList();
+            return Json(_context.ToDos.Include(t=>t.Category).Where(t=>t.IsActive==true).ToList());
         }
 
+
+        [HttpPost]
         public IActionResult SetIsActive(int id)
         {
             ToDo todo =_context.ToDos.Find(id);
             todo.IsActive = false;
             _context.ToDos.Update(todo);
             _context.SaveChanges();
-            return RedirectToAction("Index","Home");
+            //return RedirectToAction("Index","Home");
+
+            return Ok();
 
         }
 
