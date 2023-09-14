@@ -1,0 +1,35 @@
+﻿@model ToDo
+@{
+    var kategoriListesi = ViewData["categories"] as List<Category>;
+}
+
+<div class="container">
+    <form method="post">
+        <div class="mb-3 row">
+            <label for="inputName" class="col-4 col-form-label">Title</label>
+            <div class="col-8">
+                <input asp-for="Title" class="form-control"  placeholder="Enter a title">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="inputName" class="col-4 col-form-label">Content</label>
+            <div class="col-8">
+                <input asp-for="Description" class="form-control"  placeholder="Enter a content">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="inputName" class="col-4 col-form-label">Category</label>
+            <div class="col-8">
+                <select class="form-select" asp-for="CategoryId" asp-items="@(new SelectList(kategoriListesi,"Id","Name"))"></select>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="offset-sm-4 col-sm-8">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,28 @@
+﻿@model List<ToDo>
+
+    <a class="btn btn-success" asp-controller="ToDo" asp-action="Add">Add</a>
+
+    <div class="row">
+        @foreach(var todo in Model)
+        {
+        <div class="col-xxl-4">
+            <div class="card">
+                <div class="card-body">
+                    @if(todo.Category.Name=="Acil")
+                    {
+                        <h3 class="card-title bg-danger text-white">@todo.Title</h3>
+                    }
+                    else if(todo.Category.Name=="Düşük")
+                    {
+                        <h3 class="card-title bg-primary text-white">@todo.Title</h3>
+                    }
+                    
+                    <p class="card-text">@todo.Description</p>
+                    Öncelik : <span>@todo.Category.Name</span>
+                </div>
+                <div class="card-footer text-center"><a asp-action="SetIsActive" asp-controller="ToDo" asp-route-id="@todo.Id" class="btn btn-success">Done</a> <a onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-danger" asp-controller="ToDo" asp-action="Delete" asp-route-id="@todo.Id">Delete</a> </div>
+            </div>
+        </div>
+        }
+     
+    </div>
