@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using TodoList.Data;
 using TodoList.Models;
 
@@ -27,11 +28,11 @@ namespace TodoList.Web.Controllers
 
         public IActionResult GetAll()
         {
-            return Json(_context.ToDos.Include(t=>t.Category).Where(t=>t.IsActive==true).ToList());
+            return Json(_context.ToDos.Include(t=>t.Category).Where(t=>t.IsActive==true && t.UserId==int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))).ToList());  //listeleme oldugu zaman foreach
         }
 
 
-        [HttpPost]
+        [HttpPost] //YAPILDI BUTONU
         public IActionResult SetIsActive(int id)
         {
             ToDo todo =_context.ToDos.Find(id);
@@ -39,7 +40,6 @@ namespace TodoList.Web.Controllers
             _context.ToDos.Update(todo);
             _context.SaveChanges();
             //return RedirectToAction("Index","Home");
-
             return Ok();
 
         }
@@ -54,9 +54,12 @@ namespace TodoList.Web.Controllers
         [HttpPost]
         public IActionResult Add(ToDo todo)
         {
+            //todo.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); BU KISAYOLU!!!
+            //todo.UserId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             _context.ToDos.Add(todo);
             _context.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("Index", "Home");
+            return Ok();
         }
     }
 }

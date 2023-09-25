@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoList.Data;
 
@@ -11,9 +12,11 @@ using TodoList.Data;
 namespace TodoList.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230919221230_soruisareti")]
+    partial class soruisareti
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +36,9 @@ namespace TodoList.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -40,16 +46,11 @@ namespace TodoList.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserTypeId");
 
                     b.ToTable("Users");
                 });
@@ -114,40 +115,6 @@ namespace TodoList.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ToDos");
-                });
-
-            modelBuilder.Entity("TodoList.Models.UserType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserTypes");
-                });
-
-            modelBuilder.Entity("TodoList.Models.AppUser", b =>
-                {
-                    b.HasOne("TodoList.Models.UserType", "UserType")
-                        .WithMany()
-                        .HasForeignKey("UserTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserType");
                 });
 
             modelBuilder.Entity("TodoList.Models.ToDo", b =>
