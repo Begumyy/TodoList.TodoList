@@ -10,14 +10,11 @@ namespace TodoList.Web.Controllers
 {
     public class ToDoController : Controller
     {
-        private readonly IToDoRepository _repository;
-        private readonly IRepository<Category> _categoryRepository;
-       
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ToDoController(IToDoRepository repository, IRepository<Category> categoryRepository)
+        public ToDoController(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
-            _categoryRepository = categoryRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -30,8 +27,8 @@ namespace TodoList.Web.Controllers
         {
             //_context.ToDos.Remove(_context.ToDos.Find(id));
             //_context.SaveChanges();
-            _repository.DeleteById(id);
-            _repository.Save();
+            _unitOfWork.ToDos.DeleteById(id);
+            _unitOfWork.Save();
             return Ok();
 
         }
@@ -40,7 +37,7 @@ namespace TodoList.Web.Controllers
         {
             //return Json(_context.ToDos.Include(t => t.Category).Where(t => t.IsActive == true && t.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))).ToList());  //listeleme oldugu zaman foreach
 
-            return Json(_repository.GetAll(t=>t.IsActive ==true && t.UserId==int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))).Include(t=>t.Category).ToList());
+            return Json(_unitOfWork.ToDos.GetAll(t=>t.IsActive ==true && t.UserId==int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))).Include(t=>t.Category).ToList());
         }
 
 
@@ -59,8 +56,8 @@ namespace TodoList.Web.Controllers
             //_repository.Save();
             //BU BİRİNCİ YÖNTEM!!!
 
-            _repository.SetIsActive(id);
-            _repository.Save();
+            _unitOfWork.ToDos.SetIsActive(id);
+            _unitOfWork.Save();
 
             return Ok();
 
@@ -71,8 +68,8 @@ namespace TodoList.Web.Controllers
         {
             //todo.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); BU KISAYOLU!!!
             //todo.UserId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            _repository.Add(todo);
-            _repository.Save();
+            _unitOfWork.ToDos.Add(todo);
+            _unitOfWork.Save();
 
             
          

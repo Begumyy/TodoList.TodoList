@@ -8,15 +8,16 @@ namespace TodoList.Web.Controllers
 {
     public class UserTypeController : Controller
     {
-        private readonly IRepository<UserType> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserTypeController(IRepository<UserType> repository)
+        public UserTypeController(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
-       public IActionResult GetAll()
+
+        public IActionResult GetAll()
        {
-            return Json(_repository.GetAll().ToList());
+            return Json(_unitOfWork.UserTypes.GetAll().ToList());
        }
     }
 }

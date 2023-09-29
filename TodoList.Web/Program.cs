@@ -29,10 +29,8 @@ namespace TodoList.Web
             
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
-            builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
-            builder.Services.AddScoped<IRepository<AppUser>, Repository<AppUser>>();
-            builder.Services.AddScoped<IRepository<UserType>, Repository<UserType>>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+          
 
             var app = builder.Build();
 

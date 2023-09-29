@@ -8,16 +8,16 @@ using System.Security.Claims;
 using TodoList.Data;
 using TodoList.Models;
 using TodoList.Repository.Shared.Abstract;
+using TodoList.Repository.Shared.Concrete;
 
 namespace TodoList.Web.Controllers
 {
     public class AppUserController : Controller
     {
-        private readonly IRepository<AppUser> _repository;
-        public AppUserController(IRepository<AppUser> repository)
-        {
-            _repository = repository;
-        }
+        private readonly IUnitOfWork _unitOfWork;
+
+        
+
         public IActionResult Login()
         {
             return View();
@@ -36,7 +36,7 @@ namespace TodoList.Web.Controllers
             // }
 
 
-            AppUser user = _repository.GetAll(u => u.Username == appUser.Username && u.Password == appUser.Password).Include(u => u.UserType).First();
+            AppUser user = _unitOfWork.AppUsers.GetAll(u => u.Username == appUser.Username && u.Password == appUser.Password).Include(u => u.UserType).First();
 
 
 
@@ -77,7 +77,7 @@ namespace TodoList.Web.Controllers
         [Authorize(Roles ="Admin")]
         public IActionResult GetAll()
         {
-            return Json(new {data= _repository.GetAll(u => u.IsDeleted == false).Include(u => u.UserType).ToList() });
+            return Json(new {data= _unitOfWork.AppUsers.GetAll(u => u.IsDeleted == false).Include(u => u.UserType).ToList() });
         }
 
         [HttpPost]
@@ -89,8 +89,8 @@ namespace TodoList.Web.Controllers
             // _context.Users.Update(user);
             // _context.SaveChanges();
 
-            _repository.DeleteById(id);
-            _repository.Save();
+            _unitOfWork.AppUsers.DeleteById(id);
+            _unitOfWork.Save();
 
             return Ok();
        
@@ -103,8 +103,8 @@ namespace TodoList.Web.Controllers
             //_context.Users.Add(appUser);
             //_context.SaveChanges();
 
-            _repository.Add(appUser);
-            _repository.Save();
+            _unitOfWork.AppUsers.Add(appUser);
+            _unitOfWork.Save();
             return Ok();
         }
 
@@ -115,8 +115,8 @@ namespace TodoList.Web.Controllers
             //_context.Users.Update(appUser);
             //_context.SaveChanges();
 
-            _repository.Update(appUser);
-            _repository.Save();
+            _unitOfWork.AppUsers.Update(appUser);
+            _unitOfWork.Save();
             return Ok();
         }
     }
