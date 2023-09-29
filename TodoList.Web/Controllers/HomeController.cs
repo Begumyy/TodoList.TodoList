@@ -9,21 +9,13 @@ namespace TodoList.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public HomeController(ApplicationDbContext context)
-        {
-            _context=context;
-        }
-        
-
+       
         public IActionResult Index()
         {
             //ToDoController controller = new ToDoController(_context);
             //return View(controller.GetAll());
 
             return View();
-
 
 
             //return View(_context.ToDos.Include(t=>t.Category).Where(t=>t.IsActive==true).ToList()); 

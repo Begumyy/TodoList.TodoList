@@ -37,7 +37,7 @@
                     <div class="mb-3 row">
                         <label for="inputName" class="col-4 col-form-label">Rol</label>
                         <div class="col-8">
-                            <select class="form-select" name="script" id="ddlRol">
+                            <select class="form-select" name="script" id="ddlRoles">
                             </select>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                     { data: 'userType.name', title: 'Kullanıcı Tipi' },
                     {
                         data: 'id', title: 'İşlemler', render: function (data,type,row) {
-                            return `<a href="#" onclick="deleteUser(${data})" class="btn btn-danger">Sil</a>`  `<a href="#" onclick="updateUser(${data},'${row.userName}','${row.password}',${row.userTypeId})" class="btn btn-primary">Düzenle</a>`;
+                            return `<a href="#" onclick="deleteUser(${data})" class="btn btn-danger">Sil</a>  <a href="#" onclick="updateUser(${data},'${row.userName}','${row.password}',${row.userTypeId})" class="btn btn-primary">Düzenle</a>`;
                         }
                     }
                 ],
@@ -145,7 +145,7 @@
             })
         }
 
-        function updateUser(id,username,password,userTypeId){
+        function updateUser(id, username, password, userTypeId) {
 
             fillDdlRoles(userTypeId);
             $("#txtUsername").val(username);

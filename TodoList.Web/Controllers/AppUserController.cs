@@ -7,15 +7,16 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TodoList.Data;
 using TodoList.Models;
+using TodoList.Repository.Shared.Abstract;
 
 namespace TodoList.Web.Controllers
 {
     public class AppUserController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public AppUserController(ApplicationDbContext context)
+        private readonly IRepository<AppUser> _repository;
+        public AppUserController(IRepository<AppUser> repository)
         {
-            _context = context;
+            _repository = repository;
         }
         public IActionResult Login()
         {
@@ -35,7 +36,9 @@ namespace TodoList.Web.Controllers
             // }
 
 
-            AppUser user = _context.Users.Where(u => u.Username == appUser.Username && u.Password == appUser.Password).Include(u => u.UserType).First();
+            AppUser user = _repository.GetAll(u => u.Username == appUser.Username && u.Password == appUser.Password).Include(u => u.UserType).First();
+
+
 
             if (user != null)
             {
@@ -74,17 +77,20 @@ namespace TodoList.Web.Controllers
         [Authorize(Roles ="Admin")]
         public IActionResult GetAll()
         {
-            return Json(new {data= _context.Users.Where(u => u.IsDeleted == false).Include(u => u.UserType).ToList() });
+            return Json(new {data= _repository.GetAll(u => u.IsDeleted == false).Include(u => u.UserType).ToList() });
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
-           AppUser user= _context.Users.Find(id);
-            user.IsDeleted = true;
-            _context.Users.Update(user);
-            _context.SaveChanges();
+            //AppUser user= _context.Users.Find(id);
+            // user.IsDeleted = true;
+            // _context.Users.Update(user);
+            // _context.SaveChanges();
+
+            _repository.DeleteById(id);
+            _repository.Save();
 
             return Ok();
        
@@ -94,8 +100,11 @@ namespace TodoList.Web.Controllers
         [Authorize(Roles ="Admin")]
         public IActionResult Add(AppUser appUser)
         {
-            _context.Users.Add(appUser);
-            _context.SaveChanges();
+            //_context.Users.Add(appUser);
+            //_context.SaveChanges();
+
+            _repository.Add(appUser);
+            _repository.Save();
             return Ok();
         }
 
@@ -103,8 +112,11 @@ namespace TodoList.Web.Controllers
         [Authorize(Roles ="Admin")]
         public IActionResult Update(AppUser appUser)
         {
-            _context.Users.Update(appUser);
-            _context.SaveChanges();
+            //_context.Users.Update(appUser);
+            //_context.SaveChanges();
+
+            _repository.Update(appUser);
+            _repository.Save();
             return Ok();
         }
     }

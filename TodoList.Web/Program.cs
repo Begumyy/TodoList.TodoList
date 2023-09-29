@@ -2,6 +2,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TodoList.Data;
+using TodoList.Models;
+using TodoList.Repository.Abstract;
+using TodoList.Repository.Concrete;
+using TodoList.Repository.Shared.Abstract;
+using TodoList.Repository.Shared.Concrete;
 
 namespace TodoList.Web
 {
@@ -23,6 +28,11 @@ namespace TodoList.Web
             });
             
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
+            builder.Services.AddScoped<IRepository<Category>, Repository<Category>>();
+            builder.Services.AddScoped<IRepository<AppUser>, Repository<AppUser>>();
+            builder.Services.AddScoped<IRepository<UserType>, Repository<UserType>>();
 
             var app = builder.Build();
 

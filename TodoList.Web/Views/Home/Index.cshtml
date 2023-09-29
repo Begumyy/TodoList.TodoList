@@ -25,17 +25,17 @@
 
 
                     <div class="mb-3 row">
-                        <label for="inputName" class="col-4 col-form-label">Şifre belirleyin</label>
+                        <label for="inputName" class="col-4 col-form-label">Açıklama giriniz</label>
                         <div class="col-8">
-                            <input type="text" class="form-control" id="txtPassword" placeholder="Açıklama giriniz">
+                            <input type="text" class="form-control" id="txtDescription" placeholder="Açıklama giriniz">
                         </div>
                     </div>
 
 
                     <div class="mb-3 row">
-                        <label for="inputName" class="col-4 col-form-label">Rol</label>
+                        <label for="inputName" class="col-4 col-form-label">Kategori</label>
                         <div class="col-8">
-                            <select class="form-select" name="script" id="ddlRol">
+                            <select class="form-select" name="script" id="ddlCategory">
                             </select>
                         </div>
                     </div>
@@ -60,6 +60,7 @@
             //buraya yazılan şeyler sayfa hazır olduğunda çalışacak olan şeylerdir.
 
             ToDoGetir();
+            fillCategories();
         });
 
         $("#btnEkle").click(function () {
