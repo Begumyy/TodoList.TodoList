@@ -20,6 +20,6 @@ namespace TodoList.Repository.Shared.Abstract
 
         T GetFirstOrDefault(Expression<Func<T, bool>> filter);//bu method öyle bir link expression alacak ki içine yazacağım expression'ın sonucu true yada false veren bir ifade olmalı. bu ifadeden kurtulan birşey varsa veya bu ifseye uyan birşey varsa onu  da T olarak geri gönder.
 
-        void Save();
+       
     }
 }

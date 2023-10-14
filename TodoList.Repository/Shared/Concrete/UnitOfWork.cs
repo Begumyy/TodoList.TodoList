@@ -21,14 +21,16 @@ namespace TodoList.Repository.Shared.Concrete
 
         public IRepository<UserType> UserTypes { get; private set; }
 
+        public IRepository<Tag> Tags { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
-            _context = context;
+              _context = context;
               AppUsers = new Repository<AppUser>(context);
               ToDos = new ToDoRepository(context);
               Categories = new Repository<Category>(context);
               UserTypes = new Repository<UserType>(context);
+              Tags = new Repository<Tag>(context);
         }
 
         public void Save()

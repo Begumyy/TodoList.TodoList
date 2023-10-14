@@ -16,7 +16,10 @@ namespace TodoList.Web.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        
+        public AppUserController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
 
         public IActionResult Login()
         {

@@ -17,5 +17,6 @@ namespace TodoList.Models
 
         public virtual Category Category { get; set; }
         public virtual AppUser User { get; set; }
+        public virtual ICollection<Tag>? Tags { get; set; }
     }
 }

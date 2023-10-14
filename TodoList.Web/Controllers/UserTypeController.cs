@@ -16,8 +16,8 @@ namespace TodoList.Web.Controllers
         }
 
         public IActionResult GetAll()
-       {
+        {
             return Json(_unitOfWork.UserTypes.GetAll().ToList());
-       }
+        }
     }
 }
