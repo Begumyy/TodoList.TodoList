@@ -48,7 +48,7 @@ namespace TodoList.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
+            
             migrationBuilder.CreateIndex(
                 name: "IX_ToDos_CategoryId",
                 table: "ToDos",
